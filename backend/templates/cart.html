@@ -4,14 +4,18 @@
     <title>Cart</title>
 </head>
 <body>
-    <h1>Cart</h1>
+    <h1>Your Cart</h1>
+    {% if cart %}
     <ul>
         {% for item in cart %}
         <li>{{ item.name }} - ${{ item.price }}</li>
         {% endfor %}
     </ul>
     <p>Total: ${{ total }}</p>
-    <p><a href="/checkout">Checkout</a></p>
-    <p><a href="/products">Back to Products</a></p>
+    <a href="{{ url_for('checkout') }}">Checkout</a>
+    {% else %}
+    <p>Your cart is empty.</p>
+    {% endif %}
+    <p><a href="{{ url_for('show_products') }}">Back to Products</a></p>
 </body>
 </html>
