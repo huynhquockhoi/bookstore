@@ -19,27 +19,15 @@
             background-color: #4CAF50;
             color: white;
         }
-        .actions {
-            display: flex;
-            justify-content: space-around;
-        }
-        .actions button {
-            color: #4CAF50;
-            text-decoration: none;
-            border: none;
-            background: none;
-            cursor: pointer;
-        }
-        .actions button:hover {
-            color: #45a049;
-        }
     </style>
 </head>
 <body>
     <h1>Manage Products</h1>
+    <a href="{{ url_for('add_product') }}">Add New Product</a>
     <table>
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Name</th>
                 <th>Price</th>
                 <th>Image</th>
@@ -49,36 +37,24 @@
         <tbody>
             {% for product in products %}
             <tr>
-                <form method="post" action="{{ url_for('manage_products') }}" enctype="multipart/form-data">
-                    <input type="hidden" name="product_id" value="{{ product.id }}">
-                    <td><input type="text" name="name" value="{{ product.name }}" required></td>
-                    <td><input type="number" name="price" value="{{ product.price }}" step="0.01" required></td>
-                    <td>
-                        {% if product.image %}
-                        <img src="{{ product.image }}" alt="{{ product.name }}" width="100">
-                        {% else %}
-                        No Image
-                        {% endif %}
-                        <input type="file" name="image" accept="image/*">
-                    </td>
-                    <td>
-                        <div class="actions">
-                            <button type="submit" name="edit_product">Save</button>
-                            <button type="submit" name="delete_product" onclick="return confirm('Are you sure you want to delete this product?')">Delete</button>
-                        </div>
-                    </td>
-                </form>
+                <td>{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>${{ product.price }}</td>
+                <td>
+                    {% if product.image %}
+                    <img src="{{ product.image }}" alt="{{ product.name }}" width="100">
+                    {% else %}
+                    No Image
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ url_for('edit_product', product_id=product.id) }}">Edit</a>
+                    <a href="{{ url_for('delete_product', product_id=product.id) }}" onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    <h2>Add Product</h2>
-    <form method="post" action="{{ url_for('manage_products') }}">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br>
-        <label for="price">Price:</label>
-        <input type="number" id="price" name="price" step="0.01" required><br>
-        <button type="submit" name="add_product">Add</button>
-    </form>
+    <p><a href="{{ url_for('show_products') }}">Back to Products</a></p>
 </body>
 </html>
