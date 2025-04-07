@@ -10,6 +10,13 @@
         <h1>Products</h1>
     </header>
     <nav>
+        <form action="{{ url_for('search_products') }}" method="get" class="search-form">
+            <input type="text" 
+                   name="query" 
+                   placeholder="Tìm kiếm sản phẩm..." 
+                   value="{{ query if query else '' }}">
+            <button type="submit" class="btn-primary">Tìm</button>
+        </form>
         <a href="{{ url_for('show_cart') }}">View Cart</a>
         {% if is_admin %}
         <a href="{{ url_for('manage_products') }}">Manage Products</a>
@@ -17,6 +24,9 @@
         <a href="{{ url_for('logout') }}" class="btn-danger">Logout</a>
     </nav>
     <div class="container">
+        {% if query and not products %}
+        <p>Không tìm thấy sản phẩm nào phù hợp với từ khóa "{{ query }}".</p>
+        {% endif %}
         <div class="product-list">
             {% for product in products %}
             <div class="product-card">

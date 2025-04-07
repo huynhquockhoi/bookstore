@@ -113,6 +113,28 @@ def checkout():
     session['cart'] = []
     return f"Thanh toán thành công! Tổng tiền: ${total:.2f}"
 
+# Thêm route search ngay sau các route hiện có
+@app.route('/search', methods=['GET'])
+def search_products():
+    if 'logged_in' not in session:
+        return redirect(url_for('login'))
+    
+    query = request.args.get('query', '').lower().strip()
+    
+    if query:
+        search_results = [
+            product for product in products 
+            if query in product['name'].lower()
+        ]
+    else:
+        search_results = products
+    
+    is_admin = session.get('username') == 'admin'
+    return render_template('products.html', 
+                           products=search_results, 
+                           is_admin=is_admin, 
+                           query=query)
+
 @app.route('/logout')
 def logout():
     session.clear()
