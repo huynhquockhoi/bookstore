@@ -113,6 +113,12 @@ def checkout():
     session['cart'] = []
     return f"Thanh toán thành công! Tổng tiền: ${total:.2f}"
 
+@app.route('/logout')
+def logout():
+    session.clear()
+    # Chuyển hướng về trang chủ
+    return redirect(url_for('index'))
+
 @app.route('/static/<path:filename>')
 def serve_static(filename):
     root_dir = os.path.dirname(os.getcwd())
