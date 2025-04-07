@@ -1,38 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-    <title>Products</title>
+    <meta charset="UTF-8">
+    <title>Sản Phẩm</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <header>
-        <h1>Products</h1>
-    </header>
-    <nav>
-        <form action="{{ url_for('search_products') }}" method="get" class="search-form">
-            <input type="text" 
-                   name="query" 
-                   placeholder="Tìm kiếm sản phẩm..." 
-                   value="{{ query if query else '' }}">
-            <button type="submit" class="btn-primary">Tìm</button>
-        </form>
-        <a href="{{ url_for('show_cart') }}">View Cart</a>
-        {% if is_admin %}
-        <a href="{{ url_for('manage_products') }}">Manage Products</a>
-        {% endif %}
-        <a href="{{ url_for('logout') }}" class="btn-danger">Logout</a>
-    </nav>
+    <div class="header">
+        <h1>Danh Sách Sản Phẩm</h1>
+        <div class="header-actions">
+            <a href="{{ url_for('logout') }}" class="btn-logout">Đăng Xuất</a>
+        </div>
+    </div>
+
     <div class="container">
+        <div class="search-bar">
+            <form action="{{ url_for('search_products') }}" method="get">
+                <input type="text" name="query" placeholder="Tìm kiếm sản phẩm..." value="{{ query if query else '' }}">
+                <button type="submit">Tìm</button>
+            </form>
+        </div>
+
         {% if query and not products %}
         <p>Không tìm thấy sản phẩm nào phù hợp với từ khóa "{{ query }}".</p>
         {% endif %}
+
         <div class="product-list">
             {% for product in products %}
             <div class="product-card">
                 <h3>{{ product.name }}</h3>
-                <p>${{ product.price }}</p>
-                <a href="{{ url_for('add_to_cart', product_id=product.id) }}" class="btn-primary">Add to Cart</a>
+                <p>Giá: ${{ product.price }}</p>
+                <a href="{{ url_for('add_to_cart', product_id=product.id) }}" class="btn-primary">Thêm vào giỏ</a>
+                {% if is_admin %}
+                <a href="{{ url_for('manage_products') }}" class="btn-primary">Quản Lý</a>
+                {% endif %}
             </div>
             {% endfor %}
         </div>

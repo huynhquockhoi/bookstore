@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-    <title>Bookstore</title>
+    <meta charset="UTF-8">
+    <title>Nhà Sách Online</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <header>
-        <h1>Welcome to the Bookstore</h1>
-    </header>
+    <div class="header">
+        <h1>Nhà Sách Online</h1>
+    </div>
+
     <div class="container">
-        <p>Please <a href="{{ url_for('login') }}" class="btn-primary">Login</a> to access the products.</p>
+        <p>Chào mừng bạn đến với nhà sách. Vui lòng <a href="{{ url_for('login') }}" class="btn-primary">Đăng Nhập</a> để bắt đầu mua sắm.</p>
     </div>
 </body>
 </html>

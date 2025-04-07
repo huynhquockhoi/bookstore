@@ -82,6 +82,29 @@ def manage_products():
     
     return render_template('manage_product.html', products=products)
 
+@app.route('/search', methods=['GET'])
+def search_products():
+    if 'logged_in' not in session:
+        return redirect(url_for('login'))
+    
+    # Lấy từ khóa tìm kiếm từ query parameter
+    query = request.args.get('query', '').lower().strip()
+    
+    # Tìm kiếm sản phẩm theo tên
+    if query:
+        search_results = [
+            product for product in products 
+            if query in product['name'].lower()
+        ]
+    else:
+        search_results = products
+    
+    is_admin = session.get('username') == 'admin'
+    return render_template('products.html', 
+                           products=search_results, 
+                           is_admin=is_admin, 
+                           query=query)
+
 @app.route('/add_to_cart/<int:product_id>')
 def add_to_cart(product_id):
     if 'logged_in' not in session:
@@ -113,38 +136,10 @@ def checkout():
     session['cart'] = []
     return f"Thanh toán thành công! Tổng tiền: ${total:.2f}"
 
-# Thêm route search ngay sau các route hiện có
-@app.route('/search', methods=['GET'])
-def search_products():
-    if 'logged_in' not in session:
-        return redirect(url_for('login'))
-    
-    query = request.args.get('query', '').lower().strip()
-    
-    if query:
-        search_results = [
-            product for product in products 
-            if query in product['name'].lower()
-        ]
-    else:
-        search_results = products
-    
-    is_admin = session.get('username') == 'admin'
-    return render_template('products.html', 
-                           products=search_results, 
-                           is_admin=is_admin, 
-                           query=query)
-
 @app.route('/logout')
 def logout():
     session.clear()
-    # Chuyển hướng về trang chủ
     return redirect(url_for('index'))
-
-@app.route('/static/<path:filename>')
-def serve_static(filename):
-    root_dir = os.path.dirname(os.getcwd())
-    return send_from_directory(os.path.join(root_dir, 'backend', 'static'), filename)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
