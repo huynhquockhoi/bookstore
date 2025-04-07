@@ -2,9 +2,15 @@
 <html>
 <head>
     <title>Bookstore</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <h1>Welcome to the Bookstore</h1>
-    <p>Please <a href="{{ url_for('login') }}">login</a> to access the products.</p>
+    <header>
+        <h1>Welcome to the Bookstore</h1>
+    </header>
+    <div class="container">
+        <p>Please <a href="{{ url_for('login') }}" class="btn-primary">Login</a> to access the products.</p>
+    </div>
 </body>
 </html>

@@ -9,7 +9,6 @@ app.config['UPLOAD_FOLDER'] = 'static/images'
 # Tạo thư mục upload nếu chưa tồn tại
 os.makedirs(os.path.join(os.path.dirname(__file__), app.config['UPLOAD_FOLDER']), exist_ok=True)
 
-# Khai báo global products ở đầu file
 products = [
     {'id': 1, 'name': 'Book 1', 'price': 10, 'image': None},
     {'id': 2, 'name': 'Book 2', 'price': 15, 'image': None},
@@ -113,6 +112,11 @@ def checkout():
     total = sum(item['price'] for item in session.get('cart', []))
     session['cart'] = []
     return f"Thanh toán thành công! Tổng tiền: ${total:.2f}"
+
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    root_dir = os.path.dirname(os.getcwd())
+    return send_from_directory(os.path.join(root_dir, 'backend', 'static'), filename)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
