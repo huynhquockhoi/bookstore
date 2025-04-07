@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Products</title>
+</head>
+<body>
+    <h1>Products</h1>
+    <ul>
+        {% for product in products %}
+        <li>
+            {{ product.name }} - ${{ product.price }}
+            <a href="/add_to_cart/{{ product.id }}">Add to Cart</a>
+            {% if is_admin %}
+            <a href="/edit_product/{{ product.id }}">Edit</a>
+            <a href="/delete_product/{{ product.id }}">Delete</a>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    {% if is_admin %}
+    <h2>Add Product</h2>
+    <form method="post" action="/add_product">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" step="0.01" required><br>
+        <input type="submit" value="Add">
+    </form>
+    {% endif %}
+    <p><a href="/cart">View Cart</a></p>
+</body>
+</html>
